@@ -44,16 +44,6 @@ $ ->
     addNotification: (msg) ->
       $(".notifications").append($("<p>", {text: msg}))
 
-    #Insert script to make moves
-    addListeners: ->
-      $(".square").click ->
-        if Tic.data.gameOver is no and not $(@).text().length
-          if Tic.data.turns % 2 is 0 then $(@).html("X").addClass("x moved")
-          else if Tic.data.turns % 2 isnt 0 then $(@).html("O").addClass("o moved")
-          Tic.data.turns++
-          Tic.checkEnd()
-          if Tic.data.gameOver isnt yes and $(".moved").length >= 9 then Tic.checkTie("none")
-
     #Insert checkEnd here!
     checkEnd : ->
       @data.x = {}
@@ -82,6 +72,17 @@ $ ->
           @checkField(column, 'horizontal')
         @checkWin()
         @emptyStorageVar('horizontal')
+
+    #Insert script to make moves
+    addListeners: ->
+      $(".square").click ->
+        if Tic.data.gameOver is no and not $(@).text().length
+          if Tic.data.turns % 2 is 0 then $(@).html("X").addClass("x moved")
+          else if Tic.data.turns % 2 isnt 0 then $(@).html("O").addClass("o moved")
+          Tic.data.turns++
+          Tic.checkEnd()
+          if Tic.data.gameOver isnt yes and $(".moved").length >= 9 then Tic.checkTie("none")
+
 
     checkField: (field, storageVar) ->
       if $(".square").eq(field).hasClass("x")
