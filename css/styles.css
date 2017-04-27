@@ -59,11 +59,11 @@ body {
 }
 
 .square.x {
-  content:url(../preprocessors-workshop/images/cat.png);
+  content:url(/preprocessors-workshop/images/cat.png);
 }
 
 .square.o {
-  content:url(../preprocessors-workshop/images/dog.png);
+  content:url(/preprocessors-workshop/images/dog.png);
 }
 
 .notifications p {
