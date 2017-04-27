@@ -44,6 +44,39 @@ $ ->
     addNotification: (msg) ->
       $(".notifications").append($("<p>", {text: msg}))
 
+    checkField: (field, storageVar) ->
+      if $(".square").eq(field).hasClass("x")
+        if @data.x[storageVar]? then @data.x[storageVar]++ else @data.x[storageVar] = 1
+      else if $(".square").eq(field).hasClass("o")
+        if @data.o[storageVar]? then @data.o[storageVar]++ else @data.o[storageVar] = 1
+
+    checkWin: ->
+      for key,value of @data.x
+        if value >= 3
+          localStorage.x++
+          $('#won').text("#{@getPlayerName("X")} wins")
+          modal.style.display = "block";
+          @data.gameOver = true
+          @checkTie("X")
+      for key,value of @data.o
+        if value >= 3
+          localStorage.o++
+          $('#won').text("#{@getPlayerName("O")} wins")
+          modal.style.display = "block";
+          @data.gameOver = true
+          @checkTie("O")
+
+    checkTie: (winner) ->
+      @data.turns = 0
+      @data.x = {}
+      @data.o = {}
+      @data.gameOver = yes
+      if winner is "none"
+        $('#won').text("It's a tie!")
+        modal.style.display = "block";
+      @updateNotifications()
+      $(".notifications").append "<a class='play-again'>Play Again?</a>"
+
     #Insert checkEnd here!
     checkEnd : ->
       @data.x = {}
@@ -82,40 +115,6 @@ $ ->
           Tic.data.turns++
           Tic.checkEnd()
           if Tic.data.gameOver isnt yes and $(".moved").length >= 9 then Tic.checkTie("none")
-
-
-    checkField: (field, storageVar) ->
-      if $(".square").eq(field).hasClass("x")
-        if @data.x[storageVar]? then @data.x[storageVar]++ else @data.x[storageVar] = 1
-      else if $(".square").eq(field).hasClass("o")
-        if @data.o[storageVar]? then @data.o[storageVar]++ else @data.o[storageVar] = 1
-
-    checkWin: ->
-      for key,value of @data.x
-        if value >= 3
-          localStorage.x++
-          $('#won').text("#{@getPlayerName("X")} wins")
-          modal.style.display = "block";
-          @data.gameOver = true
-          @checkTie("X")
-      for key,value of @data.o
-        if value >= 3
-          localStorage.o++
-          $('#won').text("#{@getPlayerName("O")} wins")
-          modal.style.display = "block";
-          @data.gameOver = true
-          @checkTie("O")
-
-    checkTie: (winner) ->
-      @data.turns = 0
-      @data.x = {}
-      @data.o = {}
-      @data.gameOver = yes
-      if winner is "none"
-        $('#won').text("It's a tie!")
-        modal.style.display = "block";
-      @updateNotifications()
-      $(".notifications").append "<a class='play-again'>Play Again?</a>"
 
     emptyStorageVar: (storageVar) ->
       @data.x[storageVar] = null

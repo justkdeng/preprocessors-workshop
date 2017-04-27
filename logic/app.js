@@ -56,53 +56,6 @@
           text: msg
         }));
       },
-      checkEnd: function() {
-        var col, column, diagonal, diagonals, end, i, j, k, l, len, len1, middle, ref, ref1, results, row, start;
-        this.data.x = {};
-        this.data.o = {};
-        diagonals = [[0, 4, 8], [2, 4, 6]];
-        for (i = 0, len = diagonals.length; i < len; i++) {
-          diagonal = diagonals[i];
-          for (j = 0, len1 = diagonal.length; j < len1; j++) {
-            col = diagonal[j];
-            this.checkField(col, 'diagonal');
-          }
-          this.checkWin();
-          this.emptyStorageVar('diagonal');
-        }
-        results = [];
-        for (row = k = 0; k <= 2; row = ++k) {
-          start = row * 3;
-          end = (row * 3) + 2;
-          middle = (row * 3) + 1;
-          this.checkField(start, 'start');
-          this.checkField(middle, 'middle');
-          this.checkField(end, 'end');
-          this.checkWin();
-          for (column = l = ref = start, ref1 = end; ref <= ref1 ? l <= ref1 : l >= ref1; column = ref <= ref1 ? ++l : --l) {
-            this.checkField(column, 'horizontal');
-          }
-          this.checkWin();
-          results.push(this.emptyStorageVar('horizontal'));
-        }
-        return results;
-      },
-      addListeners: function() {
-        return $(".square").click(function() {
-          if (Tic.data.gameOver === false && !$(this).text().length) {
-            if (Tic.data.turns % 2 === 0) {
-              $(this).html("X").addClass("x moved");
-            } else if (Tic.data.turns % 2 !== 0) {
-              $(this).html("O").addClass("o moved");
-            }
-            Tic.data.turns++;
-            Tic.checkEnd();
-            if (Tic.data.gameOver !== true && $(".moved").length >= 9) {
-              return Tic.checkTie("none");
-            }
-          }
-        });
-      },
       checkField: function(field, storageVar) {
         if ($(".square").eq(field).hasClass("x")) {
           if (this.data.x[storageVar] != null) {
@@ -158,6 +111,53 @@
         }
         this.updateNotifications();
         return $(".notifications").append("<a class='play-again'>Play Again?</a>");
+      },
+      checkEnd: function() {
+        var col, column, diagonal, diagonals, end, i, j, k, l, len, len1, middle, ref, ref1, results, row, start;
+        this.data.x = {};
+        this.data.o = {};
+        diagonals = [[0, 4, 8], [2, 4, 6]];
+        for (i = 0, len = diagonals.length; i < len; i++) {
+          diagonal = diagonals[i];
+          for (j = 0, len1 = diagonal.length; j < len1; j++) {
+            col = diagonal[j];
+            this.checkField(col, 'diagonal');
+          }
+          this.checkWin();
+          this.emptyStorageVar('diagonal');
+        }
+        results = [];
+        for (row = k = 0; k <= 2; row = ++k) {
+          start = row * 3;
+          end = (row * 3) + 2;
+          middle = (row * 3) + 1;
+          this.checkField(start, 'start');
+          this.checkField(middle, 'middle');
+          this.checkField(end, 'end');
+          this.checkWin();
+          for (column = l = ref = start, ref1 = end; ref <= ref1 ? l <= ref1 : l >= ref1; column = ref <= ref1 ? ++l : --l) {
+            this.checkField(column, 'horizontal');
+          }
+          this.checkWin();
+          results.push(this.emptyStorageVar('horizontal'));
+        }
+        return results;
+      },
+      addListeners: function() {
+        return $(".square").click(function() {
+          if (Tic.data.gameOver === false && !$(this).text().length) {
+            if (Tic.data.turns % 2 === 0) {
+              $(this).html("X").addClass("x moved");
+            } else if (Tic.data.turns % 2 !== 0) {
+              $(this).html("O").addClass("o moved");
+            }
+            Tic.data.turns++;
+            Tic.checkEnd();
+            if (Tic.data.gameOver !== true && $(".moved").length >= 9) {
+              return Tic.checkTie("none");
+            }
+          }
+        });
       },
       emptyStorageVar: function(storageVar) {
         this.data.x[storageVar] = null;
