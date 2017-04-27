@@ -71,6 +71,18 @@
           }
         }
       },
+      checkTie: function(winner) {
+        this.data.turns = 0;
+        this.data.x = {};
+        this.data.o = {};
+        this.data.gameOver = true;
+        if (winner === "none") {
+          $('#won').text("It's a tie!");
+          modal.style.display = "block";
+        }
+        this.updateNotifications();
+        return $(".notifications").append("<a class='play-again'>Play Again?</a>");
+      },
       checkWin: function() {
         var key, ref, ref1, results, value;
         ref = this.data.x;
@@ -99,18 +111,6 @@
           }
         }
         return results;
-      },
-      checkTie: function(winner) {
-        this.data.turns = 0;
-        this.data.x = {};
-        this.data.o = {};
-        this.data.gameOver = true;
-        if (winner === "none") {
-          $('#won').text("It's a tie!");
-          modal.style.display = "block";
-        }
-        this.updateNotifications();
-        return $(".notifications").append("<a class='play-again'>Play Again?</a>");
       },
       checkEnd: function() {
         var col, column, diagonal, diagonals, end, i, j, k, l, len, len1, middle, ref, ref1, results, row, start;

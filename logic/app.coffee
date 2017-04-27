@@ -50,6 +50,17 @@ $ ->
       else if $(".square").eq(field).hasClass("o")
         if @data.o[storageVar]? then @data.o[storageVar]++ else @data.o[storageVar] = 1
 
+    checkTie: (winner) ->
+      @data.turns = 0
+      @data.x = {}
+      @data.o = {}
+      @data.gameOver = yes
+      if winner is "none"
+        $('#won').text("It's a tie!")
+        modal.style.display = "block";
+      @updateNotifications()
+      $(".notifications").append "<a class='play-again'>Play Again?</a>"
+
     checkWin: ->
       for key,value of @data.x
         if value >= 3
@@ -65,17 +76,6 @@ $ ->
           modal.style.display = "block";
           @data.gameOver = true
           @checkTie("O")
-
-    checkTie: (winner) ->
-      @data.turns = 0
-      @data.x = {}
-      @data.o = {}
-      @data.gameOver = yes
-      if winner is "none"
-        $('#won').text("It's a tie!")
-        modal.style.display = "block";
-      @updateNotifications()
-      $(".notifications").append "<a class='play-again'>Play Again?</a>"
 
     #Insert checkEnd here!
     checkEnd : ->
